@@ -70,7 +70,7 @@ where rnk <= 5;
 
 
 
--- 8. List down total gold, silver and bronze medals won by each country
+-- 8. Total gold, silver and bronze medals won by each country
 select nr.region as country, medal, count(1) as total_medals
 from olympic_history oh
 join olympics_history_noc_regions nr on nr.noc = oh.noc
