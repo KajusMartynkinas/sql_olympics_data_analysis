@@ -1,31 +1,24 @@
--- 1. How many olympics games have been held
+-- 1. Number of Olympic Games Held
 select count(distinct games) as total_olympics_games
 from olympic_history
 
 
 
--- 2. All Olympics games held so far
+-- 2. Enumeration of All Olympic Games
 select distinct year, season, city
 from olympic_history
 order by year
 
 
 
--- 3. Total number of nations who participated in each olympics game
+-- 3. Participation Trends by Nation
 select games, count(distinct noc) as total_countries
 from olympic_history
 group by games
 
 
 
--- 4. Number of games in each season
-select season, count(distinct games)
-from olympic_history
-group by season
-
-
-
--- 5. Which year saw the highest and lowest number of countries participating in olympics
+-- 4. Extremes in National Participation
 with all_countries as
 (select games, nr.region
 from olympic_history oh
@@ -46,15 +39,21 @@ from tot_countries
 order by 1;
 
 
+-- 5. Seasonal Distribution of Games
+select season, count(distinct games)
+from olympic_history
+group by season
 
--- 6. Total number of sports played in each olympic game
+
+
+-- 6. Diversity of Sports in Each Game
 select games, count(distinct sport) as number_of_sports
 from olympic_history
 group by games
 
 
 
--- 7. Top 5 athletes who have won the most gold medals
+-- 7. Top Gold Medalists
 with t1 as
     (select name, count(medal) as gold_medals
     from olympic_history
@@ -70,7 +69,7 @@ where rnk <= 5;
 
 
 
--- 8. Total gold, silver and bronze medals won by each country
+-- 8. Medal Tally by Country
 select nr.region as country, medal, count(1) as total_medals
 from olympic_history oh
 join olympics_history_noc_regions nr on nr.noc = oh.noc
@@ -94,7 +93,7 @@ order by gold desc, silver desc, bronze desc
 
 
 
--- 9. Which country won the most gold, most silver and most bronze medals in each olympic game
+-- 9. Dominant Countries in Each Game
 with temp as
     (select substring(games_country, 1, position('-' in games_country) - 1) as games
     , substring(games_country, position('-' in games_country) + 1) as country
